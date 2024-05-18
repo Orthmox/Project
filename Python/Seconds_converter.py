@@ -5,8 +5,6 @@ def convert_seconds(seconds):
     return hours, minutes, remaining_seconds
 
 hours, minutes, seconds = convert_seconds(7209)
-hour, minute, second = convert_seconds(937499)
 print("start")
 print(hours, "hours :", minutes, "minutes :", seconds, "seconds")
-print(hour, minute, second)
 print("finish")
