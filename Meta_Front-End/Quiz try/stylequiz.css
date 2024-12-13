@@ -1,0 +1,96 @@
+.intro > h1 {
+    color: red;
+    text-transform: uppercase;
+    text-align: center;
+}
+
+.intro > h2 {
+    text-align: center;
+    background-color: aqua;
+    border-radius: 15px;
+}
+.intro > p {
+    text-align: center;
+    color: darkgrey;
+}
+
+#clock {
+    display: flex;
+    flex-direction: column;
+    background-color: transparent;
+    text-decoration: none;
+    width: 30%;
+    border-radius: 15px;
+    text-align: center;
+}
+
+
+li {
+    float: left;
+}
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #98BCDE;
+}
+
+li a {
+    display: block;
+    padding: 15px;
+    text-decoration: none;
+    color: white;
+    text-align: center;
+}
+
+li a:hover {
+    background-color: blueviolet;
+}
+
+.options > input {
+    display: flex;
+    flex-direction: row;
+    margin: 15px;
+}
+
+.options, .options h3 {
+    display: inline;
+}
+
+#hidden-code {
+    display: none;
+}
+
+#retry {
+    display: none;
+}
+
+#nextQuest {
+    display: none;
+}
+
+#anscheck {
+    display: none;
+}
+
+#prompt {
+    display: block;
+}
+
+#timer {
+    display: none;
+    background-color: cornflowerblue;
+    width: 70px;
+    text-align: center;
+    border-radius: 3px;
+}
+
+#score {
+    display: none;
+}
+
+#newquiz {
+    display: none;
+}

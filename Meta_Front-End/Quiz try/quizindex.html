@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head>
+        <link rel="stylesheet" href="stylequiz.css">
+        <title>Starz Quiz</title>
+        <meta charset="UTF-8">
+        <meta name="author" content="Noble Adagbe">
+        <!-- <meta http-equiv="refresh" content="300"> -->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <div class="main">
+            <div class="nav">
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Scores</a></li>
+                    <li><a href="#">Quit</a></li>
+                </ul>
+            </div>
+            <h2 id="clock"></h2>
+            <div class="intro">
+                <h1>welcome to starz quiz</h1>
+                <p>Click the START button to start the quiz</p>
+                <h2 id="prompt" onclick="startquiz('quizbody'); showtime(); showQuestion()"><a href="#">START</a></h2>
+            </div>
+            <div id="timer">
+                <span id="minutes">00</span> :
+                <span id="seconds">00</span> s
+            </div>
+            <div id="score"></div>
+            <div class="quizbody" id="hidden-code">
+                <div class="question" id="quest">
+                </div>
+                <div class="options" id="opt">
+                    <!-- <h4 id="aa">A.<input type="radio" name="choice" id="a"><h3 id="A"></h3></h4>
+                    <h4 id="bb">B.<input type="radio" name="choice" id="b"><h3 id="B"></h3></h4>
+                    <h4 id="cc">C.<input type="radio" name="choice" id="c"><h3 id="C"></h3></h4>
+                    <h4 id="dd">D.<input type="radio" name="choice" id="d"><h3 id="D"></h3></h4> -->
+                </div>
+                <input type="submit" value="Check your answer" id="anscheck" onclick="checkAnswer();" >
+                <!-- <button id="nextQuest" onclick="newQ()">Next</button> -->
+                <p id="result"></p>
+                
+                <button id="retry" onclick="retry()">Retry</button>
+                <button id="nextQuest" onclick="next()">Next Question</button>
+                <button id="newquiz" onclick="newQuiz()">TAKE A NEW QUIZ</button>
+            </div>
+        </div>
+        <script src="quizscript.js"></script>
+        <noscript>Sorry! Your browser doesn't support JavaScript</noscript>
+    </body>
+</html>

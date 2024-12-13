@@ -1,6 +1,6 @@
 function test(size) {
     for(var i = 1; i < size+1; i++){
-        console.log('*' * i);
+        console.log(1 + i);
     }
 }
 
@@ -11,9 +11,9 @@ car.start = function(){
     console.log("Starting Engine...")
     console.log("Engine is running.")
 }
-car['lightson'] = 0
+car.lightson = 0
 car.light = function() {
-    if (car['lightson'] == 0) {
+    if (car.lightson == 0) {
         console.log("Lights are off. Turning on lights now...");
         this.lightson = 1;
     }
@@ -26,3 +26,4 @@ car.light = function() {
 
 car.light()
 car.light()
+test(4)
