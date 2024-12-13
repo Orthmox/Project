@@ -1,0 +1,172 @@
+html body {
+	display: block;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+}
+
+.container {
+	display: block;
+	margin: 0;
+	padding: 0;
+	background-color: teal;
+}
+
+.navigation-menu {
+	display: block;
+	background-color: #222222;
+	padding: 0;
+	text-transform: uppercase;
+}
+
+#weather p {
+	background-color: teal;
+	color: black;
+	width: 50%;
+	float: left;
+	border-radius: 10px;
+	margin-left: 10px;
+}
+
+.item {
+	width: 50%;
+	padding: 20px;
+	margin: auto;
+}
+
+h1 {
+	color: tomato;
+	text-transform: uppercase;
+	text-align: center;
+	font-family: serif;
+}
+
+.item h2 {
+	text-transform: uppercase;
+	text-align: left;
+	padding: 10px;
+	margin: 10px;
+	font-family: Courier New, monospace;
+	background-color: #00abaa;
+}
+
+h2 {
+	text-align: left;
+	border-radius: 15px;
+	padding: 10px;
+	margin: 10px;
+	font-family: Courier New, monospace;
+	background-color: teal;
+	width: 50%;
+}
+
+
+p {
+	color: #f0f0f0;
+	font-family: cursive;
+	text-transform: uppercase;
+}
+
+.child {
+	display: block;
+	width: 50%;
+	border-radius: 15px;
+	margin-left: auto;
+	margin-right: auto;
+	float: right;
+}
+
+ul {
+	list-style-type: none;
+	background-color: #222222;
+	overflow: hidden;
+	margin: 0;
+	padding: 0;
+}
+
+a {
+	text-decoration: none;
+	padding: 10px;
+	color: white;
+	border: solid 0.5px;
+	border-radius: 5px;
+	width: 20%;
+	background-color: #00adff;
+}
+
+a:hover {
+	background-color: chocolate;
+}
+
+li a {
+	display: block;
+	color: white;
+	float: left;
+	text-align: left;
+	padding: 15px;
+	text-decoration: none;
+	width: auto;
+	border: none;
+	background-color: #222222;
+}
+
+li a:hover {
+	background-color: #111111;
+	color: #aa99ff;
+}
+
+.navigation {
+	display: block;
+	margin: 10px;
+}
+
+button:hover {
+	color: chocolate;
+}
+
+table, td, th {
+	width: 50%;
+	color: black;
+	border-collapse: collapse;
+	padding: 5px;
+}
+
+tr:nth-child(odd) {
+	background-color: #40d97d;
+}
+
+.form-group {
+	display: block;
+	height: 100%;
+	width: 50%;
+	padding: 10px;
+	margin: 10px 0px 10px;
+	float: right;
+	background-color: transparent;
+}
+
+.form-item {
+	display: block;
+	width: 50%;
+	height: 34px;
+	padding: 6px 2px;
+	font-size: 14px;
+	float: right;
+	line-height: 1.42857143;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	background-color: #22aacc;
+}
+
+#submit {
+	display: block;
+	padding: 5px;
+	margin: 4px;
+	background-color: beige;
+}
+
+label {
+	display: inline-block;
+	max-width: 100%;
+	margin-bottom: 5px;
+}
