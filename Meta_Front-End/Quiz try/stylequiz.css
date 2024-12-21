@@ -94,3 +94,10 @@ li a:hover {
 #newquiz {
     display: none;
 }
+#pause {
+    display: none;
+}
+
+#resume {
+    display: none;
+}

@@ -2,7 +2,7 @@ function startquiz(className) {
     const targ = document.querySelector(`.${className}`);
     if (targ) {
         const head = document.createElement("h1");
-        head.textContent = "Testing";
+        head.textContent = "Multiple Choice Question";
         targ.appendChild(head);
     }
     else {
@@ -15,7 +15,7 @@ function startquiz(className) {
 function showtime() {
     const timestamp = document.querySelector(".quizbody");
     const timer = document.createElement("p");
-    timer.innerHTML = new Date().toLocaleTimeString();
+    timer.innerHTML ="Start Time: " + new Date().toLocaleTimeString();
     timestamp.appendChild(timer);
 }
 
@@ -32,10 +32,15 @@ setInterval(() => {
 //         console.log(length);
 //     })
 //     .catch(error => console.log(error));
-const trivurl = "https://opentdb.com/api.php?amount=15&type=multiple";
+numQuest = 5;
+const trivurl = "https://opentdb.com/api.php?amount="+numQuest+"&type=multiple";
 var questionObject = {};
 var questionStore = {};
 var optionsObject = {};
+const questionLength = Object.keys(questionStore).length;
+let initTime;
+let remainTime;
+var isPaused = false;
 
 var questionNumber = 0;
 var score = 0;
@@ -51,18 +56,38 @@ async function getTrivia(apiurl) {
             question: data.results,
             timeAdded: new Date()
         };
-        startTimer();
+        
+        startTimer(numQuest);
         console.log(triviaObject);
         console.log("Your questionObject was last updated at ", triviaObject.timeAdded);
+        
         return triviaObject;
     } catch(error) {
         console.error("Error fetching the trivia question:", error);
     }
 }
 
+async function showQuestion() {
+    var number = questionNumber;
+    if(Object.keys(questionObject) == 0) {
+        questionObject = await getTrivia(trivurl);
+        getQuestion(number);
+        postQuestion(number);
+        
+    } else {
+        getQuestion(number);
+        postQuestion(number);
+    }
+    
+    showElement('hidden-code');
+    showElement('anscheck');
+    showElement('pause')
+}
+
 function getQuestion(questNumb) {
     const number = questNumb;
     const size = Object.keys(questionObject.question).length;
+    
     for(var i = 1; i < size + 1;) {
         questionStore['Question ' + i] = questionObject.question[i-1];
         i++;
@@ -105,20 +130,6 @@ function postQuestion(questNumb) {
     trivSend.appendChild(trivPost);
 }
 
-async function showQuestion() {
-    var number = questionNumber;
-    if(Object.keys(questionObject) == 0) {
-        questionObject = await getTrivia(trivurl);
-        getQuestion(number);
-        postQuestion(number);
-        
-    } else {
-        getQuestion(number);
-        postQuestion(number);
-    }
-    showElement('hidden-code');
-    showElement('anscheck');
-}
 function addOpt() {
     
     const topLev = document.getElementById('opt');
@@ -130,15 +141,22 @@ function addOpt() {
     const temp = ['A', 'B', 'C', 'D'];
     for(item of optList) {
         const textNode = document.createTextNode(optionsObject[item]);
-        const iter = document.createElement('h4');
-        iter.innerHTML = temp[i] + '.';
+        const opt = document.createElement('span');
+        const iter = document.createElement('label');
+        const brpoint = document.createElement('br');
+        iter.for = temp[i].toLowerCase
+        // iter.innerHTML = temp[i] + '.';
         const radioIn = document.createElement('input');
+        opt.innerHTML = optionsObject[item];
         radioIn.type = 'radio';
         radioIn.name = 'choice';
         radioIn.value = item;
+        radioIn.id = temp[i].toLowerCase
         iter.appendChild(radioIn);
-        iter.appendChild(textNode)
+        iter.append(temp[i] + '. ')
+        iter.appendChild(opt)
         topLev.appendChild(iter);
+        topLev.appendChild(brpoint);
         i++;
     }
 }
@@ -166,18 +184,16 @@ function checkAnswer() {
         if(choice == correct) {
             result.textContent = "Correct Answer";
             result.style.color = 'green';
-            
-            hideElement('anscheck');
-            showElement('nextQuest');
             score++;
         } else {
             result.textContent = "Wrong Answer";
             result.style.color = 'red';
-            answer.textContent = " Answer: " + correct;
+            answer.innerHTML = " Answer: " + correct;
             result.appendChild(answer);
-            showElement('nextQuest');
-            hideElement('anscheck');
         }
+        showElement('nextQuest');
+        hideElement('anscheck');
+
         if(questionNumber > key.length) {
             document.getElementById("result").textContent = "END OF QUIZ";
         }
@@ -191,19 +207,24 @@ function next() {
     if (questionNumber < keys.length-1) {
         questionNumber++;
     
-    document.querySelector("#quest").textContent = "";
-    document.querySelector("#opt").textContent = "";
-    document.querySelector("#result").textContent = "";
-    showQuestion();
-    showElement('anscheck');
-    hideElement('nextQuest');
+        document.querySelector("#quest").textContent = "";
+        document.querySelector("#opt").textContent = "";
+        document.querySelector("#result").textContent = "";
+        showQuestion();
+        showElement('anscheck');
+        hideElement('nextQuest');
     } else {
         document.getElementById('prompt').textContent = 'You scored ' + score + '/' + keys.length;
-        pauseTimer();
+        document.querySelector("#quest").textContent = "A new challenge awaits!";
+        document.querySelector("#opt").textContent = "Give it another shot";
+        document.querySelector("#result").textContent = "";
         hideElement('nextQuest');
         hideElement('anscheck');
+        hideElement('resume');
+        hideElement('pause');
         showElement('newquiz');
-        showElement('prompt')
+        showElement('prompt');
+        clearInterval(timeInterval);
     }
 }
 
@@ -221,11 +242,6 @@ function hideElement(elementId) {
     document.getElementById(elementId).style.display = 'none';
 }
 
-function endQuiz() {
-    const start = document.getElementById('prompt');
-}
-
-
 function getScore() {
     const target = document.getElementById('score');
     target.textContent = "Score: " + score;
@@ -238,36 +254,84 @@ function newQuiz() {
     optionsObject = {};
     questionNumber = 0;
     score = 0;
+    
     document.querySelector("#quest").innerHTML = "";
     document.querySelector("#opt").innerHTML = "";
     document.querySelector("#result").textContent = "";
     showQuestion();
+    
+    restartTimer();
     hideElement('newquiz');
-    hideElement('prompt')
+    hideElement('prompt');
+    hideElement('resume');
 }
 
-function startTimer() {
-    const countdownTen= new Date(new Date().getTime() + 10 * 60 * 1000);
+function startTimer(duration) {
+    initTime = duration / 2;
+    remainTime = initTime * 60;
     timeInterval = setInterval(() => {
-        const now = new Date();
-        const distance = countdownTen - now;
-        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+        isPaused = false;
+        var minutes = Math.floor((remainTime % (initTime * 60)/ (60)));
+        var seconds = Math.floor((remainTime % 60));
         document.getElementById("minutes").innerHTML = minutes.toString().padStart(2, '0');
         document.getElementById("seconds").innerHTML = seconds.toString().padStart(2, '0');
         document.getElementById('timer').style.display = 'block';
+        remainTime--;
     
-        if(distance < 0) {
+        if(remainTime <= 0) {
             clearInterval(timeInterval);
             document.getElementById("timer").innerHTML = "Time Up!";
             document.getElementById('quest').innerHTML = "";
             document.getElementById('opt').innerHTML = "";
             document.getElementById('hidden-code').innerHTML = "";
             getScore();
+            hideElement('pause');
         }
     }, 1000);
 }
 
 function pauseTimer() {
+    if (remainTime > 0) {
+        clearInterval(timeInterval);
+        isPaused = true;
+        hideElement('pause');
+        hideElement('quest');
+        hideElement('opt');
+        showElement('resume');
+    }
+}
+
+function resumeTimer() {
+    if (isPaused & remainTime > 0) {
+        isPaused = false;
+        
+        timeInterval = setInterval(() => {
+            if(remainTime <= 0) {
+                clearInterval(timeInterval);
+                document.getElementById("timer").innerHTML = "Time Up!";
+                document.getElementById('quest').innerHTML = "";
+                document.getElementById('opt').innerHTML = "";
+                document.getElementById('hidden-code').innerHTML = "";
+                getScore();
+                hideElement('resume');
+                hideElement('pause');
+            } else {
+                var minutes = Math.floor((remainTime % (initTime*60)/ (60)));
+                var seconds = Math.floor((remainTime % 60));
+                document.getElementById("minutes").innerHTML = minutes.toString().padStart(2, '0');
+                document.getElementById("seconds").innerHTML = seconds.toString().padStart(2, '0');
+                hideElement('resume');
+                showElement('pause');
+                showElement('quest');
+                showElement('opt');
+                remainTime--;
+            }
+        }, 1000);
+    }
+}
+
+function restartTimer () {
+    hideElement('newquiz')
     clearInterval(timeInterval);
+    isPaused = false;
 }
